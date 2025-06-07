@@ -80,6 +80,51 @@ cd ROBOTICS_DESIGN_IA1
   const uint8_t COMM_ADDR = 0b011; // Communication module
   const uint8_t LOC_ADDR  = 0b100; // Localization module
   ```
+* ## Message Table
+
+Below is the table of I²C message exchanges (format `<SOURCE:TARGET:CMD:VALUE>`):
+
+### System Boot
+
+| Source | Target | Command         | Value |
+| ------ | ------ | --------------- | ----- |
+| MASTER | ALL    | ASK_READY_CMD   | 00011 |
+| MODULE | MASTER | TELL_READY_CMD  | 11100 |
+
+### Idle / Active Mode
+
+| Source | Target | Command       | Value |
+| ------ | ------ | ------------- | ----- |
+| MASTER | ALL    | GO_IDLE_CMD   | 10111 |
+| MASTER | ALL    | GO_ACTIVE_CMD | 11000 |
+
+### Master ↔ Localization
+
+| Source       | Target | Command                | Value |
+| ------------ | ------ | ---------------------- | ----- |
+| MASTER       | LOC    | START_MOVEMENT_CMD     | 00010 |
+| LOCALIZATION | MASTER | STARTED_MOVEMENT_CMD   | 00100 |
+| LOCALIZATION | MASTER | ENDED_MOVEMENT_CMD     | 00111 |
+
+### Master ↔ Communication
+
+| Source        | Target | Command                   | Value |
+| ------------- | ------ | ------------------------- | ----- |
+| COMMUNICATION | MASTER | STARTED_INTERACTION_CMD   | 01000 |
+| COMMUNICATION | MASTER | ENDED_INTERACTION_CMD     | 01111 |
+| COMMUNICATION | MASTER | NOTIFY_HEADTOUCH_CMD      | 01001 |
+| MASTER        | COMM   | NOTIFY_LUCKYBALL_CMD      | 01010 |
+| MASTER        | COMM   | NOTIFY_NORMALBALL_CMD     | 01011 |
+
+### Master ↔ Actuator 2
+
+| Source    | Target | Command                  | Value |
+| --------- | ------ | ------------------------ | ----- |
+| MASTER    | ACT2   | START_FLOW_CMD           | 10001 |
+| ACTUATOR2 | MASTER | STARTED_FLOW_CMD         | 10010 |
+| ACTUATOR2 | MASTER | ENDED_FLOW_CMD           | 10011 |
+| ACTUATOR2 | MASTER | DETECTED_LUCKYBALL_CMD   | 11010 |
+| ACTUATOR2 | MASTER | DETECTED_NORMALBALL_CMD  | 11011 | 
 * **Motor & Sensor Pins**: configured in the motor section of the sketch.
 * **Printer Pins**: adjust `PRINTER_RX`/`PRINTER_TX` as needed.
 * **FSM States**: see the `enum MasterState { ... }` and the `switch (mState)` block.
@@ -135,9 +180,10 @@ git push origin feature/YourFeature
 
 ---
 
+---
+
 ## License
 
 This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
 
 ```
-
