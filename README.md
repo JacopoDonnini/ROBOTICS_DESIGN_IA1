@@ -6,20 +6,41 @@
 
 ```
 ROBOTICS_DESIGN_IA1/
+├── Discover/            # Legacy tests and experimental code
+│   └── (old sketches, prototypes, data)
+├── Develop/             # Intermediate iterations and proofs of concept
+│   └── (versioned code drafts, notes)
+├── Deliver/             # Final deliverables
+│   ├── BitMapMaker/     # Generate big-digit & logo headers from .bmp files
+│   │   ├── main.ipynb   # Jupyter notebook to convert bitmaps to C headers
+│   │   ├── bitmaps/     # Source .bmp images (digits 0–9)
+│   │   └── digit_headers/ # Output `.h` files for each digit
+│   └── Full_Master/     # Arduino master controller sketch
+│       ├── Full_Master.ino # Main Arduino source implementing I²C FSM
+│       ├── digit_0.h ... digit_9.h
+│       ├── BW_Skippy_Logo.h
+│       └── Skipy_Star.h
+├── LICENSE              # MIT License
+├── README.md            # This file
+└── .gitignore
+```
+
+ROBOTICS\_DESIGN\_IA1/
 ├── BitMapMaker/            # Generate big-digit & logo headers from .bmp files
 │   ├── main.ipynb          # Jupyter notebook to convert bitmaps to C headers
 │   ├── bitmaps/            # Source .bmp images (digits 0–9)
-│   └── digit_headers/      # Output `.h` files for each digit
+│   └── digit\_headers/      # Output `.h` files for each digit
 │
-├── Full_Master/            # Arduino master controller sketch
-│   ├── Full_Master.ino     # Main Arduino source implementing I²C FSM
-│   ├── digit_0.h ... digit_9.h
-│   ├── BW_Skippy_Logo.h
-│   └── Skipy_Star.h
+├── Full\_Master/            # Arduino master controller sketch
+│   ├── Full\_Master.ino     # Main Arduino source implementing I²C FSM
+│   ├── digit\_0.h ... digit\_9.h
+│   ├── BW\_Skippy\_Logo.h
+│   └── Skipy\_Star.h
 │
 ├── README.md               # This file
 └── .gitignore
-```
+
+````
 
 ---
 
@@ -27,21 +48,20 @@ ROBOTICS_DESIGN_IA1/
 
 ### Prerequisites
 
-* **Arduino IDE** v1.8+
-* **Python 3** (for BitMapMaker)
-* Arduino libraries (install via Library Manager):
-
-  * Wire
-  * SoftwareSerial
-  * ESC\_POS\_Printer
-  * TimeLib (optional, for lunchtime feature)
+- **Arduino IDE** v1.8+
+- **Python 3** (for BitMapMaker)
+- Arduino libraries (install via Library Manager):
+  - Wire
+  - SoftwareSerial
+  - ESC\_POS\_Printer
+  - TimeLib (optional, for lunchtime feature)
 
 ### Clone the Repository
 
 ```bash
 git clone https://github.com/<your-org>/ROBOTICS_DESIGN_IA1.git
 cd ROBOTICS_DESIGN_IA1
-```
+````
 
 ### Generate/Update Bitmap Headers
 
@@ -80,51 +100,6 @@ cd ROBOTICS_DESIGN_IA1
   const uint8_t COMM_ADDR = 0b011; // Communication module
   const uint8_t LOC_ADDR  = 0b100; // Localization module
   ```
-* ## Message Table
-
-Below is the table of I²C message exchanges (format `<SOURCE:TARGET:CMD:VALUE>`):
-
-### System Boot
-
-| Source | Target | Command         | Value |
-| ------ | ------ | --------------- | ----- |
-| MASTER | ALL    | ASK_READY_CMD   | 00011 |
-| MODULE | MASTER | TELL_READY_CMD  | 11100 |
-
-### Idle / Active Mode
-
-| Source | Target | Command       | Value |
-| ------ | ------ | ------------- | ----- |
-| MASTER | ALL    | GO_IDLE_CMD   | 10111 |
-| MASTER | ALL    | GO_ACTIVE_CMD | 11000 |
-
-### Master ↔ Localization
-
-| Source       | Target | Command                | Value |
-| ------------ | ------ | ---------------------- | ----- |
-| MASTER       | LOC    | START_MOVEMENT_CMD     | 00010 |
-| LOCALIZATION | MASTER | STARTED_MOVEMENT_CMD   | 00100 |
-| LOCALIZATION | MASTER | ENDED_MOVEMENT_CMD     | 00111 |
-
-### Master ↔ Communication
-
-| Source        | Target | Command                   | Value |
-| ------------- | ------ | ------------------------- | ----- |
-| COMMUNICATION | MASTER | STARTED_INTERACTION_CMD   | 01000 |
-| COMMUNICATION | MASTER | ENDED_INTERACTION_CMD     | 01111 |
-| COMMUNICATION | MASTER | NOTIFY_HEADTOUCH_CMD      | 01001 |
-| MASTER        | COMM   | NOTIFY_LUCKYBALL_CMD      | 01010 |
-| MASTER        | COMM   | NOTIFY_NORMALBALL_CMD     | 01011 |
-
-### Master ↔ Actuator 2
-
-| Source    | Target | Command                  | Value |
-| --------- | ------ | ------------------------ | ----- |
-| MASTER    | ACT2   | START_FLOW_CMD           | 10001 |
-| ACTUATOR2 | MASTER | STARTED_FLOW_CMD         | 10010 |
-| ACTUATOR2 | MASTER | ENDED_FLOW_CMD           | 10011 |
-| ACTUATOR2 | MASTER | DETECTED_LUCKYBALL_CMD   | 11010 |
-| ACTUATOR2 | MASTER | DETECTED_NORMALBALL_CMD  | 11011 | 
 * **Motor & Sensor Pins**: configured in the motor section of the sketch.
 * **Printer Pins**: adjust `PRINTER_RX`/`PRINTER_TX` as needed.
 * **FSM States**: see the `enum MasterState { ... }` and the `switch (mState)` block.
@@ -181,6 +156,52 @@ git push origin feature/YourFeature
 ---
 
 ---
+
+## Message Table
+
+Below is the table of I²C message exchanges (format `<SOURCE:TARGET:CMD:VALUE>`):
+
+### System Boot
+
+| Source | Target | Command         | Value |
+| ------ | ------ | --------------- | ----- |
+| MASTER | ALL    | ASK_READY_CMD   | 00011 |
+| MODULE | MASTER | TELL_READY_CMD  | 11100 |
+
+### Idle / Active Mode
+
+| Source | Target | Command       | Value |
+| ------ | ------ | ------------- | ----- |
+| MASTER | ALL    | GO_IDLE_CMD   | 10111 |
+| MASTER | ALL    | GO_ACTIVE_CMD | 11000 |
+
+### Master ↔ Localization
+
+| Source       | Target | Command                | Value |
+| ------------ | ------ | ---------------------- | ----- |
+| MASTER       | LOC    | START_MOVEMENT_CMD     | 00010 |
+| LOCALIZATION | MASTER | STARTED_MOVEMENT_CMD   | 00100 |
+| LOCALIZATION | MASTER | ENDED_MOVEMENT_CMD     | 00111 |
+
+### Master ↔ Communication
+
+| Source        | Target | Command                   | Value |
+| ------------- | ------ | ------------------------- | ----- |
+| COMMUNICATION | MASTER | STARTED_INTERACTION_CMD   | 01000 |
+| COMMUNICATION | MASTER | ENDED_INTERACTION_CMD     | 01111 |
+| COMMUNICATION | MASTER | NOTIFY_HEADTOUCH_CMD      | 01001 |
+| MASTER        | COMM   | NOTIFY_LUCKYBALL_CMD      | 01010 |
+| MASTER        | COMM   | NOTIFY_NORMALBALL_CMD     | 01011 |
+
+### Master ↔ Actuator 2
+
+| Source    | Target | Command                  | Value |
+| --------- | ------ | ------------------------ | ----- |
+| MASTER    | ACT2   | START_FLOW_CMD           | 10001 |
+| ACTUATOR2 | MASTER | STARTED_FLOW_CMD         | 10010 |
+| ACTUATOR2 | MASTER | ENDED_FLOW_CMD           | 10011 |
+| ACTUATOR2 | MASTER | DETECTED_LUCKYBALL_CMD   | 11010 |
+| ACTUATOR2 | MASTER | DETECTED_NORMALBALL_CMD  | 11011 | 
 
 ## License
 
