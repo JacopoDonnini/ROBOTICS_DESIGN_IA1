@@ -24,7 +24,7 @@ ROBOTICS_DESIGN_IA1/
 ├── README.md            # This file
 └── .gitignore
 ```
-
+```
 ROBOTICS\_DESIGN\_IA1/
 ├── BitMapMaker/            # Generate big-digit & logo headers from .bmp files
 │   ├── main.ipynb          # Jupyter notebook to convert bitmaps to C headers
@@ -40,7 +40,7 @@ ROBOTICS\_DESIGN\_IA1/
 ├── README.md               # This file
 └── .gitignore
 
-````
+```
 
 ---
 
