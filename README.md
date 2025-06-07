@@ -24,23 +24,6 @@ ROBOTICS_DESIGN_IA1/
 ├── README.md            # This file
 └── .gitignore
 ```
-```
-ROBOTICS\_DESIGN\_IA1/
-├── BitMapMaker/            # Generate big-digit & logo headers from .bmp files
-│   ├── main.ipynb          # Jupyter notebook to convert bitmaps to C headers
-│   ├── bitmaps/            # Source .bmp images (digits 0–9)
-│   └── digit\_headers/      # Output `.h` files for each digit
-│
-├── Full\_Master/            # Arduino master controller sketch
-│   ├── Full\_Master.ino     # Main Arduino source implementing I²C FSM
-│   ├── digit\_0.h ... digit\_9.h
-│   ├── BW\_Skippy\_Logo.h
-│   └── Skipy\_Star.h
-│
-├── README.md               # This file
-└── .gitignore
-
-```
 
 ---
 
